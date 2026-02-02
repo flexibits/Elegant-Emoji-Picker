@@ -76,10 +76,13 @@ open class ElegantEmojiPicker: UIViewController {
             self.popoverPresentationController?.barButtonItem = sourceNavigationBarButton
         } else {
             self.modalPresentationStyle = .formSheet
+
+#if !os(visionOS)
             if #available(iOS 15.0, *) {
                 self.sheetPresentationController?.prefersGrabberVisible = true
                 self.sheetPresentationController?.detents = [.medium(), .large()]
             }
+#endif
         }
         
         self.presentationController?.delegate = self
@@ -199,7 +202,7 @@ open class ElegantEmojiPicker: UIViewController {
     }
     
     public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        self.view.backgroundColor = UIScreen.main.traitCollection.userInterfaceStyle == .light ? .black.withAlphaComponent(0.1) : .clear
+        self.view.backgroundColor = self.traitCollection.userInterfaceStyle == .light ? .black.withAlphaComponent(0.1) : .clear
     }
     
     @objc func TappedClose () {

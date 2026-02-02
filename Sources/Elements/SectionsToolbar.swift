@@ -30,11 +30,14 @@ class SectionsToolbar: UIView {
         self.PopupShadow()
         
         backgroundEffect.clipsToBounds = true
+        backgroundEffect.effect = UIBlurEffect(style: .systemUltraThinMaterial)
+
+#if !os(visionOS)
         if #available(iOS 26.0, *) {
             backgroundEffect.effect = UIGlassEffect()
-        } else {
-            backgroundEffect.effect = UIBlurEffect(style: .systemUltraThinMaterial)
         }
+#endif
+
         self.addSubview(backgroundEffect, anchors: LayoutAnchor.fullFrame)
         
         selectionBlur.clipsToBounds = true

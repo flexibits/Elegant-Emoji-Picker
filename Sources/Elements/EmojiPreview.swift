@@ -46,8 +46,10 @@ class EmojiPreview: UIViewController {
         BlackoutAnimation () { [self] in
             blackout.alpha = 1
         }
-        
+
+#if !os(visionOS)
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
+#endif
     }
     
     func Dismiss () {

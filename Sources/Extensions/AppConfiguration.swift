@@ -22,7 +22,7 @@ class AppConfiguration {
 #endif
     }
     
-    static var windowFrame: CGRect { return UIApplication.shared.keyWindow?.frame ?? UIScreen.main.bounds }
+    static var windowFrame: CGRect { return UIApplication.shared.keyWindow?.frame ?? .zero }
 
 }
 
