@@ -10,20 +10,20 @@ import UIKit
 
 class CollectionViewSectionHeader: UICollectionReusableView {
     let label = UILabel()
-    
+
     let padding = 16.0
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.InitLabel()
+        self.initLabel()
     }
 
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)!
-        self.InitLabel()
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.initLabel()
     }
 
-    func InitLabel() {
+    func initLabel() {
         label.font = .preferredFont(forTextStyle: .headline)
         label.textColor = .label
         self.addSubview(label, anchors: [.leading(padding), .trailing(padding), .top(padding), .bottom(0)])

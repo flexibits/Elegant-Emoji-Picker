@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Grant Oganyan on 3/19/23.
 //
@@ -9,11 +9,10 @@ import Foundation
 import UIKit
 
 class AppConfiguration {
-    
-    static var deviceType: UIUserInterfaceIdiom { return UIDevice.current.userInterfaceIdiom }
-        
-    static var isIPad: Bool { return deviceType == .pad }
-    static var isIPhone: Bool { return deviceType == .phone }
+    static var deviceType: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+
+    static var isIPad: Bool { deviceType == .pad }
+    static var isIPhone: Bool { deviceType == .phone }
     static var isMacCatalyst: Bool {
 #if targetEnvironment(macCatalyst)
         return true
@@ -21,15 +20,12 @@ class AppConfiguration {
         return false
 #endif
     }
-    
-    static var windowFrame: CGRect { return UIApplication.shared.keyWindow?.frame ?? .zero }
 
+    static var windowFrame: CGRect { UIApplication.shared.keyWindow?.frame ?? .zero }
 }
 
 extension UIApplication {
-    
     var keyWindow: UIWindow? {
-        return UIApplication.shared.windows.first(where: { $0.isKeyWindow })
+        UIApplication.shared.windows.first(where: { $0.isKeyWindow })
     }
-    
 }

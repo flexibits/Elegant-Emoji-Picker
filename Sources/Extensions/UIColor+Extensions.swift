@@ -18,8 +18,13 @@ extension UIColor {
 
         return (red, green, blue, alpha)
     }
-    
-    func lerp (second: UIColor, percentage: CGFloat) -> UIColor {
-        return UIColor(red: (1-percentage)*self.components.red + percentage*second.components.red, green: (1-percentage)*self.components.green + percentage*second.components.green, blue: (1-percentage)*self.components.blue + percentage*second.components.blue, alpha: (1-percentage)*self.components.alpha + percentage*second.components.alpha)
+
+    func lerp(second: UIColor, percentage: CGFloat) -> UIColor {
+        UIColor(
+            red: (1-percentage)*self.components.red + percentage*second.components.red,
+            green: (1-percentage)*self.components.green + percentage*second.components.green,
+            blue: (1-percentage)*self.components.blue + percentage*second.components.blue,
+            alpha: (1-percentage)*self.components.alpha + percentage*second.components.alpha
+        )
     }
 }

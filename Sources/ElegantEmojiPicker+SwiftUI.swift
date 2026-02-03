@@ -45,7 +45,7 @@ struct ElegantEmojiPickerRepresentable: UIViewControllerRepresentable {
                 parent.isPresented = false
             }
         }
-        
+
         // Optional delegate methods that we can leave to their default implementations for now
         // or expose further if advanced customization is needed.
         // func emojiPicker(_ picker: ElegantEmojiPicker, focusedSectionChanged to: Int, from: Int) {}
@@ -57,8 +57,8 @@ struct ElegantEmojiPickerRepresentable: UIViewControllerRepresentable {
         // func emojiPicker(_ picker: ElegantEmojiPicker, didEndPreview emoji: Emoji) {}
         // func emojiPickerDidStartSearching(_ picker: ElegantEmojiPicker) {}
         // func emojiPickerDidEndSearching(_ picker: ElegantEmojiPicker) {}
-        // func emojiPickerShouldDismissAfterSelection (_ picker: ElegantEmojiPicker) -> Bool { return true }
-        // func emojiPicker (_ picker: ElegantEmojiPicker, loadEmojiSections withConfiguration: ElegantConfiguration, _ withLocalization: ElegantLocalization) -> [EmojiSection] {
+        // func emojiPickerShouldDismissAfterSelection(_ picker: ElegantEmojiPicker) -> Bool { return true }
+        // func emojiPicker(_ picker: ElegantEmojiPicker, loadEmojiSections withConfiguration: ElegantConfiguration, _ withLocalization: ElegantLocalization) -> [EmojiSection] {
         //     return ElegantEmojiPicker.getDefaultEmojiSections(config: withConfiguration, localization: withLocalization)
         // }
     }
@@ -108,11 +108,10 @@ public extension View {
     }
 }
 
-
 @available(iOS 14.0, *)
 struct PresentationDetendsModifier: ViewModifier {
     let detents: Set<AvailablePresentationDetent>
-    
+
     func body(content: Content) -> some View {
         if #available(iOS 16.0, *) {
             content
@@ -130,14 +129,13 @@ extension View {
     }
 }
 
-
 @available(iOS 14.0, *)
 public enum AvailablePresentationDetent: Hashable {
     case medium
     case large
     case fraction(CGFloat)
     case height(CGFloat)
-    
+
     @available(iOS 16.0, *)
     var systemDetent: PresentationDetent {
         switch self {
