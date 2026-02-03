@@ -241,6 +241,7 @@ public struct ElegantLocalization {
     public var searchResultsEmptyTitle: String
 
     public var randomButtonTitle: String
+    public var resetButtonTitle: String
 
     public var emojiCategoryTitles: [EmojiCategory: String]
 
@@ -250,18 +251,20 @@ public struct ElegantLocalization {
     ///   - searchResultsTitle: Title text shown when presenting users with emoji search results
     ///   - searchResultsEmptyTitle: Title text shown when search results are empty
     ///   - randomButtonTitle: Title for the button that selects a random emoji
+    ///   - resetButtonTitle: Title for the button that resets the emoji
     ///   - emojiCategoryTitles: Dictionary of titles for default emoji categories, like "Smileys & Emotion", "People & Body", and so on.
     public init(
         searchFieldPlaceholder: String = "Search",
         searchResultsTitle: String = "Search results",
         searchResultsEmptyTitle: String = "No emoji found",
         randomButtonTitle: String = "Random",
+        resetButtonTitle: String = "Clear",
         emojiCategoryTitles: [EmojiCategory: String] = EmojiCategory.allCases.reduce(into: [EmojiCategory: String](), { $0[$1] = $1.rawValue })) {
-
-        self.searchFieldPlaceholder = searchFieldPlaceholder
-        self.searchResultsTitle = searchResultsTitle
-        self.searchResultsEmptyTitle = searchResultsEmptyTitle
-        self.randomButtonTitle = randomButtonTitle
-        self.emojiCategoryTitles = emojiCategoryTitles
-    }
+            self.searchFieldPlaceholder = searchFieldPlaceholder
+            self.searchResultsTitle = searchResultsTitle
+            self.searchResultsEmptyTitle = searchResultsEmptyTitle
+            self.randomButtonTitle = randomButtonTitle
+            self.resetButtonTitle = resetButtonTitle
+            self.emojiCategoryTitles = emojiCategoryTitles
+        }
 }

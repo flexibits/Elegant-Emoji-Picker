@@ -140,7 +140,7 @@ open class ElegantEmojiPicker: UIViewController {
         if config.showReset {
             let rstBtn = UIButton()
             resetButton = rstBtn
-            rstBtn.setTitle("Clear", for: .normal)
+            rstBtn.setTitle(localization.resetButtonTitle, for: .normal)
             rstBtn.setTitleColor(.systemRed, for: .normal)
             rstBtn.addTarget(self, action: #selector(tappedReset), for: .touchUpInside)
             rstBtn.contentHorizontalAlignment = .trailing
