@@ -16,6 +16,7 @@ open class ElegantEmojiPicker: UIViewController {
     public weak var delegate: ElegantEmojiPickerDelegate?
     public let config: ElegantConfiguration
     public let localization: ElegantLocalization
+    public let resetEnabled: Bool
 
     let padding = 16.0
     let topElementHeight = 40.0
@@ -62,10 +63,12 @@ open class ElegantEmojiPicker: UIViewController {
     ///   - localization: provide a localization to change texts on all labels
     ///   - sourceView: provide a source view for a popover presentation style.
     ///   - sourceNavigationBarButton: provide a source navigation bar button for a popover presentation style.
-    public init(delegate: ElegantEmojiPickerDelegate? = nil, configuration: ElegantConfiguration = ElegantConfiguration(), localization: ElegantLocalization = ElegantLocalization(), sourceView: UIView? = nil, sourceNavigationBarButton: UIBarButtonItem? = nil) {
+    ///   - resetEnabled: whether the reset button (if shown) is enabled; dimmed and disabled when false.
+    public init(delegate: ElegantEmojiPickerDelegate? = nil, configuration: ElegantConfiguration = ElegantConfiguration(), localization: ElegantLocalization = ElegantLocalization(), sourceView: UIView? = nil, sourceNavigationBarButton: UIBarButtonItem? = nil, resetEnabled: Bool = true) {
         self.delegate = delegate
         self.config = configuration
         self.localization = localization
+        self.resetEnabled = resetEnabled
         super.init(nibName: nil, bundle: nil)
 
         self.emojiSections = self.delegate?.emojiPicker(self, loadEmojiSections: config, localization) ?? ElegantEmojiPicker.getDefaultEmojiSections(config: config, localization: localization)
@@ -146,6 +149,8 @@ open class ElegantEmojiPicker: UIViewController {
             rstBtn.contentHorizontalAlignment = .trailing
             rstBtn.setContentHuggingPriority(.required, for: .horizontal)
             rstBtn.setContentCompressionResistancePriority(.required, for: .horizontal)
+            rstBtn.isEnabled = resetEnabled
+            rstBtn.alpha = resetEnabled ? 1.0 : 0.5
             self.view.addSubview(rstBtn, anchors: [.safeAreaTop(padding*1.5), .height(topElementHeight)])
             rstBtn.leadingAnchor.constraint(equalTo: randomButton?.trailingAnchor ?? searchFieldBackground?.trailingAnchor ?? self.view.safeAreaLayoutGuide.leadingAnchor, constant: padding).isActive = true
         }
