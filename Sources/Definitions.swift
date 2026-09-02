@@ -9,7 +9,7 @@ import UIKit
 import CoreText
 
 /// Struct representing a single emoji
-public struct Emoji: Decodable, Equatable {
+public struct Emoji: Codable, Equatable {
     public let emoji: String
     public let description: String
     public let category: EmojiCategory
@@ -18,6 +18,10 @@ public struct Emoji: Decodable, Equatable {
     public let supportsSkinTones: Bool
     public let iOSVersion: String
 
+    private static func isSkinToneModifier(_ scalar: UnicodeScalar) -> Bool {
+        (0x1F3FB...0x1F3FF).contains(scalar.value)
+    }
+
     /// Get a string representation of this emoji with another skin tone
     /// - Parameter withSkinTone: new skin tone to use
     /// - Returns: a string of the new emoji with the applied skin tone
@@ -25,9 +29,12 @@ public struct Emoji: Decodable, Equatable {
         // Applying skin tones with Dan Wood's code: https://github.com/Remotionco/Emoji-Library-and-Utilities
 
         if !supportsSkinTones { return nil }
+
+        let unmodifiedScalars = emoji.unicodeScalars.filter { !Emoji.isSkinToneModifier($0) }
+
         // If skin tone is nil, return the default yellow emoji
         guard let withSkinTone else {
-            if let unicode = emoji.unicodeScalars.first { return String(unicode) } else { return emoji }
+            return String(String.UnicodeScalarView(unmodifiedScalars))
         }
 
         var wasToneInserted = false
@@ -35,7 +42,7 @@ public struct Emoji: Decodable, Equatable {
 
         var scalars = [UnicodeScalar]()
         // Either replace first found Fully Qualified 0xFE0F, or add to the end or before the first ZWJ, 0x200D.
-        for scalar in emoji.unicodeScalars {
+        for scalar in unmodifiedScalars {
             if !wasToneInserted {
                 switch scalar.value {
                 case 0xFE0F:
@@ -62,14 +69,14 @@ public struct Emoji: Decodable, Equatable {
         return string
     }
 
-    enum CodingKeys: CodingKey {
+    enum CodingKeys: String, CodingKey {
         case emoji
         case description
         case category
         case aliases
         case tags
-        case skin_tones
-        case ios_version
+        case supportsSkinTones = "skin_tones"
+        case iOSVersion = "ios_version"
     }
 
     public init(from decoder: Decoder) throws {
@@ -79,8 +86,8 @@ public struct Emoji: Decodable, Equatable {
         self.category = try container.decode(EmojiCategory.self, forKey: .category)
         self.aliases = try container.decode([String].self, forKey: .aliases)
         self.tags = try container.decode([String].self, forKey: .tags)
-        self.supportsSkinTones = try container.decodeIfPresent(Bool.self, forKey: .skin_tones) ?? false
-        self.iOSVersion = try container.decode(String.self, forKey: .ios_version)
+        self.supportsSkinTones = try container.decodeIfPresent(Bool.self, forKey: .supportsSkinTones) ?? false
+        self.iOSVersion = try container.decode(String.self, forKey: .iOSVersion)
     }
 
     /// Create an instance of an emoji
@@ -136,7 +143,7 @@ public enum EmojiSkinTone: String, CaseIterable {
     case Dark = "🏿"
 }
 
-public enum EmojiCategory: String, CaseIterable, Decodable {
+public enum EmojiCategory: String, CaseIterable, Codable {
     case SmileysAndEmotion = "Smileys & Emotion"
     case PeopleAndBody = "People & Body"
     case AnimalsAndNature = "Animals & Nature"

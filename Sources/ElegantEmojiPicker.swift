@@ -245,7 +245,15 @@ open class ElegantEmojiPicker: UIViewController {
 
 extension ElegantEmojiPicker {
     func didSelectSection(_ index: Int) {
-        collectionView?.scrollToItem(at: IndexPath(row: 0, section: index), at: .centeredVertically, animated: true)
+        if let collectionView {
+            // swiftlint:disable:next line_length
+            if let headerAttributes = collectionView.layoutAttributesForSupplementaryElement(ofKind: UICollectionView.elementKindSectionHeader, at: IndexPath(item: 0, section: index)) {
+                let targetY = headerAttributes.frame.minY - collectionView.adjustedContentInset.top
+                collectionView.setContentOffset(CGPoint(x: 0, y: targetY), animated: true)
+            } else {
+                collectionView.scrollToItem(at: IndexPath(row: 0, section: index), at: .top, animated: true)
+            }
+        }
 
         overridingFocusedSection = true
         self.focusedSection = index
@@ -287,14 +295,14 @@ extension ElegantEmojiPicker: UITextFieldDelegate {
         DispatchQueue.global(qos: .userInteractive).async { [weak self] in
             guard let self else { return }
 
-            if count == 0 {
-                self.searchResults = nil
-            } else {
+            var results: [Emoji]?
+            if count != 0 {
                 // swiftlint:disable:next line_length
-                self.searchResults = self.delegate?.emojiPicker(self, searchResultFor: searchTerm, fromAvailable: self.emojiSections) ?? ElegantEmojiPicker.getSearchResults(searchTerm, fromAvailable: self.emojiSections)
+                results = self.delegate?.emojiPicker(self, searchResultFor: searchTerm, fromAvailable: self.emojiSections) ?? ElegantEmojiPicker.getSearchResults(searchTerm, fromAvailable: self.emojiSections)
             }
 
             DispatchQueue.main.async {
+                self.searchResults = results
                 self.collectionView?.reloadData()
                 self.collectionView?.setContentOffset(.zero, animated: false)
             }
@@ -551,7 +559,7 @@ extension ElegantEmojiPicker {
     /// Returns an array of all available emojis. Use this method to retrieve emojis for your own collection.
     /// - Returns: Array of all emojis.
     static public func getAllEmoji() -> [Emoji] {
-        guard let url = Bundle.module.url(forResource: "Emoji Unicode 16.0", withExtension: "json"),
+        guard let url = Bundle.module.url(forResource: "Emoji Unicode 17.0", withExtension: "json"),
               let emojiData = try? Data(contentsOf: url),
               let decoded = try? JSONDecoder().decode([Emoji].self, from: emojiData) else {
             return []
