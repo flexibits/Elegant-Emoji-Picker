@@ -495,7 +495,7 @@ extension ElegantEmojiPicker {
         if overridingFocusedSection { return }
 
         let visibleIndexPaths = self.collectionView?.indexPathsForVisibleItems ?? []
-        DispatchQueue.global(qos: .userInitiated).async {
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             var sectionCounts = [Int: Int]()
 
             for indexPath in visibleIndexPaths {
@@ -505,7 +505,7 @@ extension ElegantEmojiPicker {
 
             let mostVisibleSection = sectionCounts.max(by: { $0.1 < $1.1 })?.key ?? 0
 
-            DispatchQueue.main.async { [weak self] in
+            DispatchQueue.main.async {
                 guard let self else { return }
 
                 self.focusedSection = mostVisibleSection
